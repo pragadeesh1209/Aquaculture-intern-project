@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Fish Feed Suggestions</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', sans-serif;
+            height: 100%;
+            background: linear-gradient(to bottom, #f0e6d2, #c4b494, #8c7d5d);
+            color: #3b2f1f;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Bubble effect */
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: rgba(215, 195, 163, 0.3);
+            border-radius: 50%;
+            animation: rise 8s infinite ease-in;
+            z-index: 0;
+        }
+        @keyframes rise {
+            0% { transform: translateY(0) scale(1); opacity: 0.5; }
+            100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+        }
+
+        .navbar {
+            background: linear-gradient(90deg, #7a5c3b, #a67c52);
+            overflow: hidden;
+            padding: 20px 40px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar-left {
+            color: #d7c3a3;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+        }
+
+        .navbar-right a {
+            color: #d7c3a3;
+            text-align: center;
+            padding: 18px 20px;
+            text-decoration: none;
+            font-size: 1.2rem;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+            font-weight: 600;
+            transition: color 0.3s ease;
+            margin-left: 15px;
+        }
+
+        .navbar-right a:hover {
+            color: #b39a66;
+        }
+
+        .container {
+            flex-grow: 1;
+            max-width: 900px;
+            background: rgba(255, 245, 220, 0.85);
+            margin: 15px auto 30px;
+            padding: 15px 18px;
+            border-radius: 8px;
+            box-shadow: 0 8px 20px rgba(123, 92, 59, 0.4);
+            position: relative;
+            z-index: 2;
+            color: #3b2f1f;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #5a432b;
+            font-size: 1.2rem;
+            text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+        }
+
+        input[type="text"] {
+            width: 90%;  /* wider input */
+            padding: 6px 8px;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border: 2px solid #a67c52;
+            outline-offset: 1px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: inset 1px 2px 3px #f7f1e1;
+            background: #f7f1e1;
+            color: #4b3a20;
+            user-select: text;
+        }
+        input[type="text"]:focus {
+            border-color: #7a5c3b;
+            box-shadow: 0 0 5px #a67c52;
+            background: #fff9e6;
+            outline: none;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, #7a5c3b, #a67c52);
+            color: #d7c3a3;
+            padding: 8px 16px;
+            font-size: 0.85rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: background-color 0.2s ease, color 0.3s ease;
+            box-shadow: 0 4px 10px rgba(123, 92, 59, 0.5);
+            text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+        }
+        .btn:hover {
+            background: linear-gradient(90deg, #a67c52, #7a5c3b);
+            color: #b39a66;
+            box-shadow: 0 6px 15px rgba(123, 92, 59, 0.7);
+        }
+
+        hr {
+            margin: 40px 0 20px;
+            border: 1px solid #a67c52;
+        }
+
+        ul {
+            list-style-type: disc;
+            padding-left: 20px;
+            color: #5a432b;
+        }
+
+        li {
+            margin-bottom: 10px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .section-title {
+            font-size: 1rem;
+            font-weight: bold;
+            color: #7a5c3b;
+            margin-bottom: 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            font-size: 0.85rem;
+        }
+
+        th, td {
+            border: 1px solid #a67c52;
+            padding: 8px 12px;
+            text-align: left;
+            color: #5a432b;
+        }
+
+        th {
+            background: linear-gradient(90deg, #7a5c3b, #a67c52);
+            color: #d7c3a3;
+            text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+        }
+
+        .no-data {
+            margin-top: 20px;
+            font-style: italic;
+            color: #6b543c;
+            font-size: 0.85rem;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 960px) {
+            .container {
+                max-width: 95%;
+            }
+            input[type="text"] {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<script>
+  for (let i = 0; i < 20; i++) {
+    let bubble = document.createElement("div");
+    let size = Math.random() * 30 + 20;
+    bubble.classList.add("bubble");
+    bubble.style.width = size + "px";
+    bubble.style.height = size + "px";
+    bubble.style.left = Math.random() * window.innerWidth + "px";
+    bubble.style.animationDuration = (Math.random() * 5 + 5) + "s";
+    bubble.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(bubble);
+  }
+</script>
+
+<div class="navbar">
+    <div class="navbar-left">Aquaculture</div>
+    <div class="navbar-right">
+        <a href="{% url 'home' %}">Home</a>
+        <a href="{% url 'vendor_login' %}">Vendor Login</a>
+    </div>
+</div>
+
+<div class="container">
+    <h1>Fish Feed Suggestions</h1>
+
+    <!-- Search Form -->
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="fish_type" placeholder="Enter fish type" required value="{{ fish_type|default:'' }}">
+        <br>
+        <button type="submit" name="search_feed" class="btn">Search</button>
+    </form>
+
+    <!-- Show Suggestions -->
+    {% if suggestions is not none %}
+        <hr>
+        <p class="section-title">Suggested Feeds:</p>
+        {% if suggestions %}
+            <ul>
+                {% for food in suggestions %}
+                    <li><strong>{{ food.name }}</strong> (Fish Type: {{ food.fish_type }})</li>
+                {% endfor %}
+            </ul>
+
+            <!-- Find Vendors Button (shown only after suggestions) -->
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="fish_type" value="{{ fish_type }}">
+                <button type="submit" name="find_vendors" class="btn">Find Vendors</button>
+            </form>
+        {% else %}
+            <p class="no-data">No suggestions found.</p>
+        {% endif %}
+    {% endif %}
+
+    <!-- Show Vendors -->
+    {% if vendors is not none %}
+        <hr>
+        <p class="section-title">Available Vendors:</p>
+        {% if vendors %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Vendor Name</th>
+                        <th>Shop Name</th>
+                        <th>Shop Place</th>
+                        <th>Contact</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for vendor in vendors %}
+                        <tr>
+                            <td>{{ vendor.name }}</td>
+                            <td>{{ vendor.shop_name }}</td>
+                            <td>{{ vendor.shop_place }}</td>
+                            <td>{{ vendor.contact }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-data">No vendors found.</p>
+        {% endif %}
+    {% endif %}
+</div>
+
+</body>
+</html>

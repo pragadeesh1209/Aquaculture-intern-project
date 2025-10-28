@@ -1,0 +1,193 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Login - Aquaculture</title>
+<style>
+  html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(to bottom, #f0e6d2, #c4b494, #8c7d5d);
+    color: #3b2f1f;
+    position: relative;
+  }
+
+  /* Bubble effect */
+  .bubble {
+    position: absolute;
+    bottom: -100px;
+    background: rgba(215, 195, 163, 0.3);
+    border-radius: 50%;
+    animation: rise 8s infinite ease-in;
+    z-index: 0;
+  }
+
+  @keyframes rise {
+    0% { transform: translateY(0) scale(1); opacity: 0.5; }
+    100% { transform: translateY(-120vh) scale(1.5); opacity: 0; }
+  }
+
+  /* Navbar */
+  .navbar {
+    background: linear-gradient(90deg, #7a5c3b, #a67c52);
+    padding: 15px 30px;
+    color: #d7c3a3;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  }
+
+  .navbar .brand {
+    color: #d7c3a3;
+    font-weight: 900;
+    font-size: 36px;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    user-select: none;
+  }
+
+  .navbar .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .navbar a {
+    color: #d7c3a3;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 20px;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.3);
+    transition: color 0.3s ease;
+  }
+
+  .navbar a:hover {
+    color: #b39a66;
+  }
+
+
+  .container {
+    max-width: 400px;
+    margin: 80px auto;
+    background: rgba(255, 245, 220, 0.85);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(123, 92, 59, 0.4);
+    position: relative;
+    z-index: 2;
+    color: #3b2f1f;
+  }
+
+  h2 {
+    text-align: center;
+    color: #5a432b;
+    margin-bottom: 25px;
+    text-shadow: 0 1px 0 rgba(255,255,255,0.4);
+  }
+
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0 20px;
+    border: 1px solid #a67c52;
+    border-radius: 5px;
+    font-size: 16px;
+    background: #f7f1e1;
+    color: #4b3a20;
+    box-shadow: inset 1px 1px 4px rgba(255,255,255,0.8);
+    transition: border-color 0.3s ease;
+  }
+
+  input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+    border-color: #7a5c3b;
+    box-shadow: 0 0 5px #a67c52;
+    background: #fff9e6;
+  }
+
+  button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #7a5c3b, #a67c52);
+    color: #d7c3a3;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease, color 0.3s ease;
+    text-shadow: 0 1px 1px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 10px rgba(123, 92, 59, 0.5);
+  }
+
+  button:hover {
+    background: linear-gradient(90deg, #a67c52, #7a5c3b);
+    color: #b39a66;
+    box-shadow: 0 6px 15px rgba(123, 92, 59, 0.7);
+  }
+
+  .signup-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: #3b2f1f;
+  }
+
+  .signup-link a {
+    color: #7a5c3b;
+    text-decoration: none;
+    font-weight: bold;
+    transition: text-decoration 0.3s ease;
+  }
+
+  .signup-link a:hover {
+    text-decoration: underline;
+  }
+</style>
+</head>
+<body>
+
+<script>
+  for (let i = 0; i < 20; i++) {
+    let bubble = document.createElement("div");
+    let size = Math.random() * 30 + 20;
+    bubble.classList.add("bubble");
+    bubble.style.width = size + "px";
+    bubble.style.height = size + "px";
+    bubble.style.left = Math.random() * window.innerWidth + "px";
+    bubble.style.animationDuration = (Math.random() * 5 + 5) + "s";
+    bubble.style.animationDelay = Math.random() * 5 + "s";
+    document.body.appendChild(bubble);
+  }
+</script>
+
+<!-- Navbar -->
+<div class="navbar">
+  <div class="brand">Aquaculture</div>
+  <div class="nav-links">
+    <a href="{% url 'home' %}">Home</a>
+    <a href="{% url 'vendor_login' %}">Vendor Login</a>
+  </div>
+</div>
+
+<!-- Login Form -->
+<div class="container">
+  <h2>User Login</h2>
+  <form method="POST" action="{% url 'user_login' %}">
+    {% csrf_token %}
+    <input type="text" name="email" placeholder="Enter email" required>
+    <input type="password" name="password" placeholder="Enter password" required>
+    <button type="submit">Login</button>
+  </form>
+
+  <div class="signup-link">
+    Don't have an account? <a href="{% url 'user_signup' %}">Sign up</a>
+  </div>
+</div>
+
+</body>
+</html>
