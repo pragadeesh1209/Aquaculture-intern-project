@@ -8,13 +8,18 @@ https://docs.djangoproject.com/en/5.2/howto/deployment/asgi/
 """
 
 import os
+import sys
 
-from django.core.asgi import get_asgi_application
+def main():
+    os.environ.setdefault(
+        'DJANGO_SETTINGS_MODULE',
+        'aquaculture_project.aquaculture_project.settings'
+    )
+    try:
+        from django.core.management import execute_from_command_line
+    except ImportError as exc:
+        raise
+    execute_from_command_line(sys.argv)
 
-os.environ.setdefault(
-    'DJANGO_SETTINGS_MODULE',
-    'aquaculture_project.aquaculture_project.settings'
-)
-
-
-application = get_asgi_application()
+if __name__ == '__main__':
+    main()
