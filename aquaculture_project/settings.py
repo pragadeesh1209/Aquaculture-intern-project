@@ -87,10 +87,14 @@ WSGI_APPLICATION = 'aquaculture_project.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 # Database configuration for Railway
+print("--- ENVIRONMENT VARIABLE INSPECTION ---")
+print(f"Available keys: {[k for k in os.environ.keys() if 'MYSQL' in k or 'DATABASE' in k]}")
+print("---------------------------------------")
+
 DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('MYSQL_URL')
 
 if DATABASE_URL:
-    print("DATABASE_DEBUG: Using DATABASE_URL or MYSQL_URL")
+    print("DATABASE_DEBUG: Found DATABASE_URL or MYSQL_URL")
     DATABASES = {
         'default': dj_database_url.config(default=DATABASE_URL)
     }
@@ -107,7 +111,7 @@ elif os.environ.get('MYSQLHOST'):
         }
     }
 else:
-    print("DATABASE_DEBUG: No database environment variables found. Defaulting to 127.0.0.1")
+    print("DATABASE_DEBUG: CRITICAL - No database environment variables found! Defaulting to 127.0.0.1")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
