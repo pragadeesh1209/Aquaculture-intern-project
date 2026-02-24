@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'aquaculture_project.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default='mysql://root:pragadeesh@127.0.0.1:3306/aquaculture_db'
+        default=os.environ.get('MYSQL_URL', 'mysql://root:pragadeesh@127.0.0.1:3306/aquaculture_db')
     )
 }
 
