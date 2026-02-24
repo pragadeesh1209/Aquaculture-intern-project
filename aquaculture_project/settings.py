@@ -90,10 +90,12 @@ WSGI_APPLICATION = 'aquaculture_project.wsgi.application'
 DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('MYSQL_URL')
 
 if DATABASE_URL:
+    print("DATABASE_DEBUG: Using DATABASE_URL or MYSQL_URL")
     DATABASES = {
         'default': dj_database_url.config(default=DATABASE_URL)
     }
 elif os.environ.get('MYSQLHOST'):
+    print(f"DATABASE_DEBUG: Using individual MYSQLHOST variables (Host: {os.environ.get('MYSQLHOST')})")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
@@ -105,6 +107,7 @@ elif os.environ.get('MYSQLHOST'):
         }
     }
 else:
+    print("DATABASE_DEBUG: No database environment variables found. Defaulting to 127.0.0.1")
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.mysql',
