@@ -48,4 +48,4 @@ class Suggestion(models.Model):
     fish_type = models.CharField(max_length=100)
 
     def __str__(self):
-        return f"Suggest {self.food.food_name} for {self.fish_type}"
+        return f"Suggest {self.food.name} for {self.fish_type}"

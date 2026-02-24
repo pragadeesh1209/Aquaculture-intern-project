@@ -37,12 +37,20 @@ def user_signup(request):
     if request.method == "POST":
         name = request.POST.get("name")
         email = request.POST.get("email")
+        username = request.POST.get("username")
         password = request.POST.get("password")
+        confirm_password = request.POST.get("confirm_password")
+
+        if password != confirm_password:
+             return render(request, "signup.html", {"error": "Passwords do not match"})
+
+        if User.objects.filter(username=username).exists():
+            return render(request, "signup.html", {"error": "Username already taken"})
 
         if User.objects.filter(email=email).exists():
             return render(request, "signup.html", {"error": "Email already registered"})
 
-        user = User.objects.create_user(username=email, email=email, password=password)
+        user = User.objects.create_user(username=username, email=email, password=password)
         user.first_name = name
         user.save()
 
