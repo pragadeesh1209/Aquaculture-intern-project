@@ -86,13 +86,35 @@ WSGI_APPLICATION = 'aquaculture_project.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get('DATABASE_URL') or 
-        os.environ.get('MYSQL_URL') or 
-        'mysql://root:pragadeesh@127.0.0.1:3306/aquaculture_db'
-    )
-}
+# Database configuration for Railway
+DATABASE_URL = os.environ.get('DATABASE_URL') or os.environ.get('MYSQL_URL')
+
+if DATABASE_URL:
+    DATABASES = {
+        'default': dj_database_url.config(default=DATABASE_URL)
+    }
+elif os.environ.get('MYSQLHOST'):
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': os.environ.get('MYSQLDATABASE'),
+            'USER': os.environ.get('MYSQLUSER'),
+            'PASSWORD': os.environ.get('MYSQLPASSWORD'),
+            'HOST': os.environ.get('MYSQLHOST'),
+            'PORT': os.environ.get('MYSQLPORT'),
+        }
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'aquaculture_db',
+            'USER': 'root',
+            'PASSWORD': 'pragadeesh',
+            'HOST': '127.0.0.1',
+            'PORT': '3306',
+        }
+    }
 
 
 # Password validation
